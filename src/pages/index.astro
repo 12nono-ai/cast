@@ -1,39 +1,103 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PostCard from "../components/PostCard.astro";
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft))
-  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
-  .slice(0, 3);
+const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
 
 <BaseLayout>
-  <section class="hero shell">
-    <span class="eyebrow">Technical Writing</span>
-    <h1>Writing clear notes about shipping software that holds up in practice.</h1>
-    <p class="hero-copy">
-      I publish essays on frontend engineering, AI tooling, debugging workflows,
-      and product-minded development. The focus is practical reasoning, not recycled advice.
-    </p>
-    <div class="hero-actions">
-      <a class="button primary" href="/posts">Read the posts</a>
-      <a class="button" href="/about">About the author</a>
+  <section class="paper-home-head">
+    <div>
+      <span class="eyebrow">Research Index</span>
+      <h1 class="paper-home-title">Technical papers, field notes, and engineering breakdowns.</h1>
+      <p class="paper-home-copy">
+        A modular index of writing on frontend systems, AI tooling, debugging,
+        and product-oriented software work.
+      </p>
     </div>
+    <a class="button" href="/about">About</a>
   </section>
 
-  <section class="section shell">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">Latest</span>
-        <h2 style="margin-top:0.8rem;">Recent writing</h2>
+  <section class="paper-filters shell">
+    <div class="filter-bar">
+      <label class="filter-search">
+        <span class="sr-only">Search papers</span>
+        <input id="paper-search" type="search" placeholder="Search papers, topics, or keywords" />
+      </label>
+      <div class="filter-chips" id="paper-filters">
+        <button class="filter-chip is-active" type="button" data-filter="all">All</button>
+        {tags.map((tag) => (
+          <button class="filter-chip" type="button" data-filter={tag}>{tag}</button>
+        ))}
       </div>
-      <a class="button" href="/posts">View all posts</a>
     </div>
-    <div class="post-grid">
+
+    <div class="paper-list" id="paper-list">
       {posts.map((post) => (
-        <PostCard slug={post.slug} data={post.data} />
+        <article
+          class="paper-card"
+          data-paper-card
+          data-title={post.data.title.toLowerCase()}
+          data-description={post.data.description.toLowerCase()}
+          data-tags={post.data.tags.join("|").toLowerCase()}
+        >
+          <div class="paper-card-meta">
+            <span>{post.data.publishedAt.toLocaleDateString("en-US", { dateStyle: "medium" })}</span>
+            <span>Paper</span>
+          </div>
+          <h2 class="paper-card-title">
+            <a href={`/posts/${post.slug}`}>{post.data.title}</a>
+          </h2>
+          <p class="paper-card-copy">{post.data.description}</p>
+          <div class="paper-card-tags">
+            {post.data.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </article>
       ))}
     </div>
+
+    <p class="paper-empty muted" id="paper-empty" hidden>No papers match the current filter.</p>
   </section>
+
+  <script is:inline>
+    const cards = Array.from(document.querySelectorAll("[data-paper-card]"));
+    const chips = Array.from(document.querySelectorAll(".filter-chip"));
+    const search = document.querySelector("#paper-search");
+    const empty = document.querySelector("#paper-empty");
+    let activeFilter = "all";
+
+    const applyFilters = () => {
+      const term = (search?.value ?? "").trim().toLowerCase();
+      let visibleCount = 0;
+
+      for (const card of cards) {
+        const matchesFilter =
+          activeFilter === "all" || card.dataset.tags?.includes(activeFilter.toLowerCase());
+        const haystack = `${card.dataset.title} ${card.dataset.description} ${card.dataset.tags}`;
+        const matchesSearch = !term || haystack.includes(term);
+        const visible = matchesFilter && matchesSearch;
+        card.hidden = !visible;
+        if (visible) visibleCount += 1;
+      }
+
+      if (empty) empty.hidden = visibleCount > 0;
+    };
+
+    for (const chip of chips) {
+      chip.addEventListener("click", () => {
+        activeFilter = chip.dataset.filter ?? "all";
+        for (const current of chips) current.classList.remove("is-active");
+        chip.classList.add("is-active");
+        applyFilters();
+      });
+    }
+
+    search?.addEventListener("input", applyFilters);
+    applyFilters();
+  </script>
 </BaseLayout>
