@@ -1,45 +1,41 @@
 ---
-title: How I Think About Debugging Complex UI Bugs
-description: A practical workflow for narrowing frontend bugs without wasting cycles on guesses.
+title: Scaling Multi-Modal Understanding with Sparse Visual Tokens
+description: Notes on reducing visual token load while keeping cross-modal reasoning stable in large VLMs.
 publishedAt: 2026-03-10
 tags:
-  - Training
-  - Model Architecture
+  - Multi-Modal Understanding
 draft: false
 ---
 
-Most hard UI bugs are not hard because the code is large. They are hard because the mental model is wrong.
+Multi-modal understanding systems usually fail from token pressure before they fail from missing scale.
 
-## Problem
+## Motivation
 
-Teams often start with a shallow explanation:
+As image encoders push more patches and higher resolutions into a language model, the system gains detail but loses efficiency. The context window becomes crowded, attention costs rise, and downstream reasoning quality becomes harder to predict.
 
-- "React rendered twice."
-- "The API was slow."
-- "State got out of sync."
+The practical question is not whether more visual tokens help. They do. The real question is which tokens matter enough to keep.
 
-These labels are not diagnoses. They are symptoms.
+## Core idea
 
-## A better workflow
+Sparse visual token strategies try to compress vision input before or during fusion with the language backbone. The most promising variants tend to do one of three things:
 
-I usually reduce the search space in this order:
+- keep only high-salience regions
+- pool nearby local features into fewer semantic tokens
+- route different token budgets to different tasks
 
-1. Confirm the exact user-visible failure.
-2. Trace the data path that produces the failure.
-3. Check which assumption in that path no longer holds.
-4. Only then inspect implementation details.
+This shifts the design target from raw coverage to information density.
 
-This order matters. If you read code too early, you tend to rationalize instead of falsify.
+## What I am tracking
 
-## What to capture
+When reading papers in this area, I care about four signals:
 
-- The smallest reproducible input
-- The last known correct state
-- The first incorrect state
-- Timing conditions, if the bug is asynchronous
+- token reduction ratio
+- reasoning accuracy after compression
+- robustness on dense documents and charts
+- whether compression happens before or after cross-modal alignment
 
-Once you have these, most "complex" bugs become ordinary.
+Sparse methods often look strong on captioning-style benchmarks but degrade when the task requires spatial grounding across multiple small objects.
 
 ## Conclusion
 
-Debugging improves when the team stops naming frameworks and starts naming broken assumptions.
+The interesting frontier in multi-modal understanding is not simply adding more vision context. It is learning how to preserve the right visual evidence with far fewer tokens.
