@@ -1,0 +1,17 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Not Found" description="The page you requested does not exist.">
+  <section class="page-head shell">
+    <span class="eyebrow">404</span>
+    <h1 style="font-size:clamp(2.4rem,6vw,4.5rem); margin-top:1rem;">That page does not exist.</h1>
+    <p class="lead" style="margin-top:1rem; max-width:50ch;">
+      The link may be outdated, or the article may have moved. Start again from the posts archive.
+    </p>
+    <div class="hero-actions" style="margin-top:1.5rem;">
+      <a class="button primary" href="/posts">Browse posts</a>
+      <a class="button" href="/">Back home</a>
+    </div>
+  </section>
+</BaseLayout>

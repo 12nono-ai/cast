@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="hero shell">
+    <span class="eyebrow">Technical Writing</span>
+    <h1>Writing clear notes about shipping software that holds up in practice.</h1>
+    <p class="hero-copy">
+      I publish essays on frontend engineering, AI tooling, debugging workflows,
+      and product-minded development. The focus is practical reasoning, not recycled advice.
+    </p>
+    <div class="hero-actions">
+      <a class="button primary" href="/posts">Read the posts</a>
+      <a class="button" href="/about">About the author</a>
+    </div>
+  </section>
+
+  <section class="section shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Latest</span>
+        <h2 style="margin-top:0.8rem;">Recent writing</h2>
+      </div>
+      <a class="button" href="/posts">View all posts</a>
+    </div>
+    <div class="post-grid">
+      {posts.map((post) => (
+        <PostCard slug={post.slug} data={post.data} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  slug: string;
+  data: {
+    title: string;
+    description: string;
+    publishedAt: Date;
+    tags: string[];
+  };
+}
+
+const { slug, data } = Astro.props;
+---
+
+<article class="post-card">
+  <div class="post-meta">
+    <span>{data.publishedAt.toLocaleDateString("en-US", { dateStyle: "medium" })}</span>
+  </div>
+  <h3 style="margin-top:0.65rem;">
+    <a href={`/posts/${slug}`}>{data.title}</a>
+  </h3>
+  <p>{data.description}</p>
+  <div class="post-tags" style="margin-top:1rem;">
+    {data.tags.map((tag) => (
+      <span class="tag">{tag}</span>
+    ))}
+  </div>
+</article>

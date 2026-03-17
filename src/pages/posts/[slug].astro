@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CodeEnhancements from "../../components/CodeEnhancements.astro";
+import GiscusComments from "../../components/GiscusComments.astro";
+import PostToc from "../../components/PostToc.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="post-layout">
+    <header class="page-head shell">
+      <div class="meta-row">
+        <span>{post.data.publishedAt.toLocaleDateString("en-US", { dateStyle: "long" })}</span>
+        <span>•</span>
+        <span>{post.data.tags.join(" / ")}</span>
+      </div>
+      <h1 style="font-size:clamp(2.4rem,6vw,4.6rem); margin-top:1rem; max-width:14ch;">
+        {post.data.title}
+      </h1>
+      <p class="lead" style="margin-top:1rem; max-width:60ch;">{post.data.description}</p>
+    </header>
+
+    <div class="post-content-grid">
+      <section class="content-shell shell">
+        <div class="post-body">
+          <Content />
+        </div>
+      </section>
+
+      <PostToc headings={headings} />
+    </div>
+
+    <GiscusComments />
+    <CodeEnhancements />
+  </article>
+</BaseLayout>

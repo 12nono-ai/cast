@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
+);
+---
+
+<BaseLayout title="Posts" description="Articles on engineering, AI tooling, and practical software delivery.">
+  <section class="page-head shell">
+    <span class="eyebrow">Archive</span>
+    <h1 style="font-size:clamp(2.4rem,6vw,4.5rem); margin-top:1rem;">Posts</h1>
+    <p class="lead" style="margin-top:1rem; max-width:58ch;">
+      Essays and field notes about engineering decisions, debugging, product tradeoffs,
+      and the systems behind shipping software.
+    </p>
+  </section>
+
+  <section class="section shell">
+    <div class="post-grid">
+      {posts.map((post) => (
+        <PostCard slug={post.slug} data={post.data} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
