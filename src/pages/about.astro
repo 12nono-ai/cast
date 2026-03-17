@@ -6,40 +6,48 @@ import { site } from "../data/site";
 <BaseLayout title="About" description="About the author, focus areas, and what this blog is for.">
   <section class="page-head shell">
     <span class="eyebrow">About</span>
-    <h1 style="font-size:clamp(2.4rem,6vw,4.5rem); margin-top:1rem;">Technical writing with an engineering bias.</h1>
+    <h1 style="font-size:clamp(2.4rem,6vw,4.5rem); margin-top:1rem;">
+      Research notes on multi-modal models, training, and architecture.
+    </h1>
     <p class="lead" style="margin-top:1rem; max-width:58ch;">
-      This site is for documenting the reasoning behind real implementation choices:
-      architecture, debugging, tradeoffs, and lessons from shipping.
+      This site collects reading notes, paper breakdowns, and working hypotheses
+      around multi-modal understanding, generation, training systems, and model design.
     </p>
   </section>
 
   <section class="about-grid">
     <div class="content-shell shell">
-      <h2 style="font-size:2rem;">What I write about</h2>
+      <h2 style="font-size:2rem;">What this archive covers</h2>
       <p class="lead" style="margin-top:1rem;">
-        I focus on frontend engineering, AI-assisted workflows, developer tooling,
-        and the habits that make software teams move faster without losing rigor.
+        The focus is current research in vision-language models and adjacent systems:
+        how they are trained, how they fuse modalities, and where their design tradeoffs show up.
       </p>
       <div class="stack-list" style="margin-top:1.5rem;">
         <div>
           <h3>Topics</h3>
-          <p class="muted">React, Astro, TypeScript, AI product workflows, debugging, shipping habits.</p>
+          <p class="muted">
+            Multi-modal understanding, multi-modal generation, training recipes,
+            cross-attention design, token compression, and alignment strategies.
+          </p>
         </div>
         <div>
-          <h3>Writing style</h3>
-          <p class="muted">Short on hype, long on decision quality, examples, and practical tradeoffs.</p>
+          <h3>Approach</h3>
+          <p class="muted">
+            Short summaries, architecture-first reading, and practical comparisons between methods,
+            rather than generic commentary.
+          </p>
         </div>
       </div>
     </div>
 
     <div class="content-shell shell">
-      <h2 style="font-size:2rem;">Elsewhere</h2>
+      <h2 style="font-size:2rem;">Profiles</h2>
       <div class="link-list" style="margin-top:1rem;">
         <a class="button" href={site.social.github} target="_blank" rel="noreferrer">GitHub</a>
         <a class="button" href={site.social.x} target="_blank" rel="noreferrer">X / Twitter</a>
       </div>
       <p class="muted" style="margin-top:1.25rem;">
-        Replace the placeholder profile links in <code>src/data/site.ts</code> before publishing.
+        Update the profile links through your deployment environment variables before publishing.
       </p>
     </div>
   </section>
