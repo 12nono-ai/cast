@@ -3,9 +3,8 @@ title: What AI Tooling Is Actually Good For
 description: A grounded view of where AI helps engineering teams and where it mostly adds noise.
 publishedAt: 2026-02-28
 tags:
-  - AI
-  - Engineering
-  - Product
+  - Multi-Modal Understanding
+  - Multi-Modal Generation
 draft: false
 ---
 

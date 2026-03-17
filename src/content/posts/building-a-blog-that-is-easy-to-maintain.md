@@ -3,9 +3,7 @@ title: Building a Blog That Is Easy to Maintain
 description: Why content structure and deployment simplicity matter more than endless customization.
 publishedAt: 2026-03-06
 tags:
-  - Astro
-  - Blogging
-  - Architecture
+  - Model Architecture
 draft: false
 ---
 

@@ -3,9 +3,8 @@ title: How I Think About Debugging Complex UI Bugs
 description: A practical workflow for narrowing frontend bugs without wasting cycles on guesses.
 publishedAt: 2026-03-10
 tags:
-  - Debugging
-  - Frontend
-  - Workflow
+  - Training
+  - Model Architecture
 draft: false
 ---
 

@@ -5,17 +5,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime()
 );
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+const tags = [
+  "Multi-Modal Understanding",
+  "Multi-Modal Generation",
+  "Training",
+  "Model Architecture"
+];
 ---
 
 <BaseLayout>
   <section class="paper-home-head">
     <div>
       <span class="eyebrow">Research Index</span>
-      <h1 class="paper-home-title">Technical papers, field notes, and engineering breakdowns.</h1>
+      <h1 class="paper-home-title">
+        Research notes on multi-modal understanding, generation, training, and model architecture.
+      </h1>
       <p class="paper-home-copy">
-        A modular index of writing on frontend systems, AI tooling, debugging,
-        and product-oriented software work.
+        A focused archive of papers and working notes across the core areas I am
+        studying and writing about.
       </p>
     </div>
     <a class="button" href="/about">About</a>
